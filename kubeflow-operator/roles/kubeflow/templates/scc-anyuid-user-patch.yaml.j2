@@ -1,0 +1,46 @@
+kind: SecurityContextConstraints
+metadata:
+  name: anyuid
+users:
+- system:serviceaccount:istio-system:istio-ingress-service-account
+- system:serviceaccount:istio-system:default
+- system:serviceaccount:istio-system:prometheus
+- system:serviceaccount:istio-system:istio-egressgateway-service-account
+- system:serviceaccount:istio-system:istio-citadel-service-account
+- system:serviceaccount:istio-system:istio-ingressgateway-service-account
+- system:serviceaccount:istio-system:istio-cleanup-old-ca-service-account
+- system:serviceaccount:istio-system:istio-mixer-post-install-account
+- system:serviceaccount:istio-system:istio-mixer-service-account
+- system:serviceaccount:istio-system:istio-pilot-service-account
+- system:serviceaccount:istio-system:istio-sidecar-injector-service-account
+- system:serviceaccount:istio-system:istio-galley-service-account
+- system:serviceaccount:istio-system:istio-security-post-install-account
+- system:serviceaccount:istio-system:istio-multi
+- system:serviceaccount:istio-system:kiali-service-account
+- system:serviceaccount:{{ namespace }}:admission-webhook-bootstrap-service-account
+- system:serviceaccount:{{ namespace }}:admission-webhook-service-account
+- system:serviceaccount:{{ namespace }}:application-controller-service-account
+- system:serviceaccount:{{ namespace }}:argo
+- system:serviceaccount:{{ namespace }}:argo-ui
+- system:serviceaccount:{{ namespace }}:centraldashboard
+- system:serviceaccount:{{ namespace }}:default
+- system:serviceaccount:{{ namespace }}:jupyter-web-app-service-account
+- system:serviceaccount:{{ namespace }}:katib-controller
+- system:serviceaccount:{{ namespace }}:katib-ui
+- system:serviceaccount:{{ namespace }}:meta-controller-service
+- system:serviceaccount:{{ namespace }}:metadata-ui
+- system:serviceaccount:{{ namespace }}:metrics-collector
+- system:serviceaccount:{{ namespace }}:ml-pipeline
+- system:serviceaccount:{{ namespace }}:ml-pipeline-persistenceagent
+- system:serviceaccount:{{ namespace }}:ml-pipeline-scheduledworkflow
+- system:serviceaccount:{{ namespace }}:ml-pipeline-ui
+- system:serviceaccount:{{ namespace }}:ml-pipeline-viewer-crd-service-account
+- system:serviceaccount:{{ namespace }}:notebook-controller-service-account
+- system:serviceaccount:{{ namespace }}:pipeline-runner
+- system:serviceaccount:{{ namespace }}:profiles-controller-service-account
+- system:serviceaccount:{{ namespace }}:profiles-default-service-account
+- system:serviceaccount:{{ namespace }}:pytorch-operator
+- system:serviceaccount:{{ namespace }}:seldon-manager
+- system:serviceaccount:{{ namespace }}:tf-job-dashboard
+- system:serviceaccount:{{ namespace }}:tf-job-operator
+- system:serviceaccount:{{ namespace }}:spartakus

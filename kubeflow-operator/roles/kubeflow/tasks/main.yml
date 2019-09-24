@@ -1,0 +1,31 @@
+---
+# tasks file for kubeflow
+- set_fact:
+    release: "{{ lookup('env','KUBEFLOW_RELEASE') | default('v0.6.2', true) }}"
+  when: release is undefined
+  
+- name: Check kfctl and its version
+  shell:
+    /opt/ansible/kfctl version
+  register: version
+  ignore_errors: yes
+
+- name: download kfctl
+  include: kfctl.yml
+  when: version.stdout is not regex(release)
+
+- name: check if ml-pipeline exists
+  k8s_facts:
+    kind: Deployment
+    name: ml-pipeline
+    namespace: "{{ namespace }}"
+  register: pipeline
+
+- name: remove istio installation if already exists
+  include: istio.yaml
+  when: pipeline.resources == [] or version.stdout is not regex(release)
+
+- name: install
+  include: install.yml
+  when: pipeline.resources == [] or version.stdout is not regex(release)
+  

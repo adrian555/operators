@@ -1,0 +1,316 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[{"apiVersion":"operators.ibm.com/v1alpha1","kind":"Kubeflow","metadata":{"name":"example-kubeflow"},"spec":{"namespace":"kubeflow","release":"v0.6.2"}},{"apiVersion":"operators.ibm.com/v1alpha1","kind":"Kubeflow","metadata":{"name":"example-kubeflow"},"spec":{"openshift":true,"patch_hostpath":true,"patch_minio":true,"patch_mysql":true,"release":"v0.6.2"}},{"apiVersion":"operators.ibm.com/v1alpha1","kind":"Kubeflow","metadata":{"name":"example-kubeflow"},"spec":{"executor":"pns","namespace":"kubeflow","release":"v0.6.2"}}]'
+    capabilities: Basic Install
+  name: kubeflow-operator.v0.0.1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions: {}
+  description: Placeholder description
+  displayName: Kubeflow Operator
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - '*'
+          resources:
+          - '*'
+          verbs:
+          - get
+          - list
+          - update
+          - patch
+          - watch
+        - apiGroups:
+          - '*'
+          resources:
+          - deployments
+          - deployments/status
+          - services
+          - services/status
+          verbs:
+          - create
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - nodes
+          - nodes/proxy
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          - pods/exec
+          - pods/log
+          - pods/status
+          - replicasets
+          - namespaces
+          - serviceaccounts
+          - replicationcontrollers
+          - services
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          - apps
+          - extensions
+          resources:
+          - daemonsets
+          - deployments
+          - services
+          - replicasets
+          - statefulsets
+          - ingresses
+          - ingresses/status
+          - podsecuritypolicies
+          - deployments/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resourceNames:
+          - kubeflow-operator
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - app.k8s.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - storage.k8s.io
+          resources:
+          - storageclasses
+          verbs:
+          - '*'
+        - apiGroups:
+          - snapshot.storage.k8s.io
+          resources:
+          - volumesnapshots
+          verbs:
+          - get
+          - create
+          - delete
+        - apiGroups:
+          - metacontroller.k8s.io
+          resources:
+          - compositecontrollers
+          verbs:
+          - '*'
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - '*'
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - clusterroles
+          - clusterrolebindings
+          - roles
+          - rolebindings
+          verbs:
+          - '*'
+        - apiGroups:
+          - admissionregistration.k8s.io
+          resources:
+          - validatingwebhookconfigurations
+          - mutatingwebhookconfigurations
+          verbs:
+          - '*'
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - '*'
+        - apiGroups:
+          - batch
+          resources:
+          - jobs
+          - cronjobs
+          verbs:
+          - '*'
+        - apiGroups:
+          - policy
+          resources:
+          - poddisruptionbudgets
+          verbs:
+          - '*'
+        - apiGroups:
+          - autoscaling
+          resources:
+          - horizontalpodautoscalers
+          - horizontalpodautoscalers/status
+          verbs:
+          - '*'
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - get
+          - create
+        - apiGroups:
+          - operators.ibm.com
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - kubeflow.org
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - workflows
+          - workflows/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - config.istio.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - networking.istio.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - authentication.istio.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        - apiGroups:
+          - rbac.istio.io
+          resources:
+          - '*'
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - watch
+        - apiGroups:
+          - monitoring.kiali.io
+          resources:
+          - monitoringdashboards
+          verbs:
+          - get
+        - apiGroups:
+          - security.openshift.io
+          resources:
+          - securitycontextconstraints
+          verbs:
+          - '*'
+        - nonResourceURLs:
+          - /metrics
+          verbs:
+          - get
+        - apiGroups:
+          - machinelearning.seldon.io
+          resources:
+          - seldondeployments
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - machinelearning.seldon.io
+          resources:
+          - seldondeployments/status
+          verbs:
+          - get
+          - update
+          - patch
+        - apiGroups:
+          - tensorflow.org
+          resources:
+          - tfjobs
+          - tfjobs/status
+          verbs:
+          - '*'
+        serviceAccountName: kubeflow-operator
+      deployments:
+      - name: kubeflow-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: kubeflow-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                name: kubeflow-operator
+            spec:
+              containers:
+              - command:
+                - /usr/local/bin/ao-logs
+                - /tmp/ansible-operator/runner
+                - stdout
+                image: adrian555/kubeflow6:v0.0.1
+                imagePullPolicy: Always
+                name: ansible
+                resources: {}
+                volumeMounts:
+                - mountPath: /tmp/ansible-operator/runner
+                  name: runner
+                  readOnly: true
+              - env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: kubeflow-operator
+                image: adrian555/kubeflow6:v0.0.1
+                imagePullPolicy: Always
+                name: operator
+                resources: {}
+                volumeMounts:
+                - mountPath: /tmp/ansible-operator/runner
+                  name: runner
+              serviceAccountName: kubeflow-operator
+              volumes:
+              - emptyDir: {}
+                name: runner
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  maturity: alpha
+  provider: {}
+  version: 0.0.1

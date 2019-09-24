@@ -1,0 +1,10 @@
+apiVersion: operators.ibm.com/v1alpha1
+kind: Kubeflow
+metadata:
+  name: example-kubeflow
+spec:
+  release: v0.6.2
+  openshift: true
+  patch_mysql: true
+  patch_minio: true
+  patch_hostpath: true

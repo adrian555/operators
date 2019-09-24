@@ -1,0 +1,56 @@
+- name: get PATH
+  shell: echo $PATH
+  register: path
+
+- name: init installation
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
+  shell: |
+    cd /opt/ansible
+    rm -rf kfapp
+    kfctl init kfapp --config=$PWD/kfctl_k8s_istio.yaml -n "{{ namespace }}" -V
+    cd kfapp
+    kfctl generate all -V
+
+- name: customize the installation if required
+  when: executor is defined and executor == 'pns'
+  environment: 
+    WORKFLOW_CONTROLLER_IMAGE: "{{ workflow_controller_image }}"
+  shell: |
+    cd /opt/ansible
+    cp -r patched/pns kfapp/kustomize/argo/overlays
+    cd kfapp
+    python ../patched/kustomize.py
+
+- name: customize mysql to 5.6
+  when: patch_mysql is defined and patch_mysql
+  shell: |
+    cd /opt/ansible
+    cd kfapp
+    python ../patched/kustomize-sql.py
+
+- name: customize minio
+  when: patch_minio is defined and patch_minio
+  shell: |
+    cd /opt/ansible
+    cd kfapp
+    python ../patched/kustomize-minio.py
+
+- name: customize hostpath
+  when: patch_hostpath is defined and patch_hostpath
+  shell: |
+    cd /opt/ansible
+    cd kfapp
+    python ../patched/kustomize-hostpath.py
+
+- name: update scc if on openshift
+  when: openshift is defined and openshift
+  include: openshift.yml
+
+- name: deploy kubeflow
+  environment:
+    PATH: "{{ path.stdout }}:/opt/ansible"
+  shell: |
+    cd /opt/ansible/kfapp
+    kfctl apply all -V
+  

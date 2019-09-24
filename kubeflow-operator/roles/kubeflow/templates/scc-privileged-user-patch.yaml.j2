@@ -1,0 +1,6 @@
+kind: SecurityContextConstraints
+metadata:
+  name: privileged
+users:
+- system:serviceaccount:{{ namespace }}:kubeflow-operator
+- system:serviceaccount:istio-system:default

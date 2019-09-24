@@ -1,0 +1,21 @@
+- name: Download kfctl
+  block:
+    - get_url:
+        url: https://github.com/kubeflow/kubeflow/releases/download/{{ release }}/kfctl_{{ release }}_linux.tar.gz
+        dest: /opt/ansible/kfctl.tgz
+    - shell: |
+        tar zxvf /opt/ansible/kfctl.tgz
+    - copy:
+        src: kfctl
+        dest: /opt/ansible/kfctl
+        mode: 0744
+
+- name: Download istio config
+  block:
+    - get_url:
+        url: https://raw.githubusercontent.com/kubeflow/kubeflow/{{ release }}/bootstrap/config/kfctl_k8s_istio.yaml
+        dest: /opt/ansible/kfctl_k8s_istio.yaml
+    - replace:
+        path: /opt/ansible/kfctl_k8s_istio.yaml
+        regexp: 'namespace: .*'
+        replace: 'namespace: {{ namespace }}'

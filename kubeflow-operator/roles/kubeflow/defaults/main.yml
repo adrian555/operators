@@ -1,0 +1,5 @@
+---
+# defaults file for kubeflow
+workflow_controller_image: "{{ lookup('env','WORKFLOW_CONTROLLER_IMAGE') | default('tomcli/workflow-controller:containerd', true) }}"
+namespace: "{{ meta.namespace | default('kubeflow', true) }}"
+openshift: "{{ lookup('env', 'OPENSHIFT') | default(false|bool, true) }}"

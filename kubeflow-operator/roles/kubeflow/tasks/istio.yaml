@@ -1,0 +1,13 @@
+- name: check if istio exists
+  k8s_facts:
+    kind: Deployment
+    name: istio-ingressgateway
+    namespace: istio-system
+  register: istio
+
+- name: remove istio installation from config
+  shell: |
+    cd /opt/ansible
+    python patched/config.py
+  when: istio.resources != []
+  

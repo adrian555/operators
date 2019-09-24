@@ -1,0 +1,243 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: kubeflow-operator
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - update
+  - patch
+  - watch
+- apiGroups:
+  - '*'
+  resources:
+  - deployments
+  - deployments/status
+  - services
+  - services/status
+  verbs:
+  - create
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - nodes
+  - nodes/proxy
+  - endpoints
+  - persistentvolumeclaims
+  - events
+  - configmaps
+  - secrets
+  - pods/exec
+  - pods/log
+  - pods/status
+  - replicasets
+  - namespaces
+  - serviceaccounts
+  - replicationcontrollers
+  - services
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  - apps
+  - extensions
+  resources:
+  - daemonsets
+  - deployments
+  - services
+  - replicasets
+  - statefulsets
+  - ingresses
+  - ingresses/status
+  - podsecuritypolicies
+  - deployments/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resourceNames:
+  - kubeflow-operator
+  resources:
+  - deployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - app.k8s.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - '*'
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshots
+  verbs:
+  - get
+  - create
+  - delete
+- apiGroups:
+  - metacontroller.k8s.io
+  resources:
+  - compositecontrollers
+  verbs:
+  - '*'
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - '*'
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  - clusterrolebindings
+  - roles
+  - rolebindings
+  verbs:
+  - '*'
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  - mutatingwebhookconfigurations
+  verbs:
+  - '*'
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - '*'
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - '*'
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - '*'
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  - horizontalpodautoscalers/status
+  verbs:
+  - '*'
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  verbs:
+  - get
+  - create
+- apiGroups:
+  - operators.ibm.com
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - kubeflow.org
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - argoproj.io
+  resources:
+  - workflows
+  - workflows/finalizers
+  verbs:
+  - '*'
+- apiGroups:
+  - config.istio.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - networking.istio.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - authentication.istio.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - rbac.istio.io
+  resources:
+  - '*'
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - monitoring.kiali.io
+  resources:
+  - monitoringdashboards
+  verbs:
+  - get
+- apiGroups:
+  - security.openshift.io
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - '*'
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+- apiGroups:
+  - machinelearning.seldon.io
+  resources:
+  - seldondeployments
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - machinelearning.seldon.io
+  resources:
+  - seldondeployments/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - tensorflow.org
+  resources:
+  - tfjobs
+  - tfjobs/status
+  verbs:
+  - '*'

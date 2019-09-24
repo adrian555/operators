@@ -1,0 +1,88 @@
+- name: patch scc anyuid users
+  block:
+    - template:
+        src: scc-anyuid-user-patch.yaml.j2
+        dest: scc-anyuid-user-patch.yaml
+        mode: 0644
+    - k8s_facts:
+        kind: SecurityContextConstraints
+        name: anyuid
+      register: scc
+    - lineinfile:
+        path: scc-anyuid-user-patch.yaml
+        state: present
+        insertafter: EOF
+        line: "- {{ item }} "
+      loop: "{{ scc.resources[0].users }}"
+    - k8s:
+        state: present
+        kind: SecurityContextConstraints
+        name: anyuid
+        src: scc-anyuid-user-patch.yaml
+        merge_type: merge
+- name: patch scc anyuid groups
+  block:
+    - template:
+        src: scc-anyuid-group-patch.yaml.j2
+        dest: scc-anyuid-group-patch.yaml
+        mode: 0644
+    - k8s_facts:
+        kind: SecurityContextConstraints
+        name: anyuid
+      register: scc
+    - lineinfile:
+        path: scc-anyuid-group-patch.yaml
+        state: present
+        insertafter: EOF
+        line: "- {{ item }} "
+      loop: "{{ scc.resources[0].groups }}"
+    - k8s:
+        state: present
+        kind: SecurityContextConstraints
+        name: anyuid
+        src: scc-anyuid-group-patch.yaml
+        merge_type: merge
+- name: patch scc privileged users
+  block:
+    - template:
+        src: scc-privileged-user-patch.yaml.j2
+        dest: scc-privileged-user-patch.yaml
+        mode: 0644
+    - k8s_facts:
+        kind: SecurityContextConstraints
+        name: privileged
+      register: scc
+    - lineinfile:
+        path: scc-privileged-user-patch.yaml
+        state: present
+        insertafter: EOF
+        line: "- {{ item }} "
+      loop: "{{ scc.resources[0].users }}"
+    - k8s:
+        state: present
+        kind: SecurityContextConstraints
+        name: privileged
+        src: scc-privileged-user-patch.yaml
+        merge_type: merge
+- name: patch scc privileged groups
+  block:
+    - template:
+        src: scc-privileged-group-patch.yaml.j2
+        dest: scc-privileged-group-patch.yaml
+        mode: 0644
+    - k8s_facts:
+        kind: SecurityContextConstraints
+        name: privileged
+      register: scc
+    - lineinfile:
+        path: scc-anyuid-group-patch.yaml
+        state: present
+        insertafter: EOF
+        line: "- {{ item }} "
+      loop: "{{ scc.resources[0].groups }}"
+    - k8s:
+        state: present
+        kind: SecurityContextConstraints
+        name: privileged
+        src: scc-privileged-group-patch.yaml
+        merge_type: merge

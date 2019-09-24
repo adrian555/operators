@@ -1,0 +1,5 @@
+kind: SecurityContextConstraints
+metadata:
+  name: privileged
+groups:
+- system:serviceaccounts:{{ namespace }}

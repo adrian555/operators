@@ -1,0 +1,8 @@
+apiVersion: operators.ibm.com/v1alpha1
+kind: Kubeflow
+metadata:
+  name: example-kubeflow
+spec:
+  release: v0.6.2
+  namespace: kubeflow
+  executor: pns
